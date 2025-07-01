@@ -1,16 +1,17 @@
 const express = require("express");
 const app = express();
 const http = require("http").createServer(app);
+const io = require("socket.io")(http);
+
+app.use(express.static(__dirname + "/Public"));
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/Public/index.html");
+});
 const Port = process.env.PORT || 3000;
 http.listen(Port, () => {
   console.log(`Server is running on port ${Port}`);
 });
-app.use(express.static(__dirname + "/public"));
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/Public/index.html");
-});
 // socket.io RJ Server setup
-const io = require("socket.io")(http);
 
 io.on("connection", (socket) => {
   console.log("Connected...");
